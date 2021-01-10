@@ -23,11 +23,9 @@ class Softmax_CategoricalCrossEntropy:
     def backward(self, dvalues, y_true):
         # Samples
         samples = len(dvalues)
-
         # Encode one hot if needed
         if len(y_true.shape) == 2:
             y_true = np.argmax(y_true, axis=1)
-    
         # Copy data to modify it
         self.dinputs = dvalues.copy()
         # Calculate gradient
