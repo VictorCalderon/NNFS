@@ -27,3 +27,17 @@ class CategoricalCrossEntropy(Loss):
             raise ValueError(f'Invalid input dimension: {len(y_true.shape)}')
         # Return losses
         return -np.log(correct_confidences)
+    
+    # Backpropagation
+    def backward(self, dvalues, y_true):
+        # Number of samples
+        samples = len(dvalues)
+        # Compute len of label vector
+        labels = len(dvalues[0])
+        # If labels are sparse, turn them into a one-hot vector
+        if len(y_true.shape) == 1:
+            y_true = np.eye(labels)[y_true]
+        # Compute gradients on inputs
+        self.dinputs = -y_true / dvalues
+        # Normalize gradients
+        self.dinputs = self.dinputs / samples
